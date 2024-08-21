@@ -1,0 +1,21 @@
+mutation (
+  $collective: CollectiveCreateInput!
+  $host: AccountReferenceInput
+  $user: IndividualCreateInput
+) {
+  createCollective(
+    collective: $collective
+    host: $host
+    user: $user
+  ) {
+    id
+    legacyId
+    slug
+    type
+    name
+    legalName
+    description
+    longDescription
+    currency
+  }
+}

@@ -1,0 +1,26 @@
+mutation (
+  $account: AccountReferenceInput!
+  $host: AccountReferenceInput!
+  $action: ProcessHostApplicationAction!
+) {
+  processHostApplication(
+    account: $account
+    host: $host
+    action: $action
+  ) {
+    account {
+      id
+      legacyId
+      slug
+      type
+      name
+      legalName
+      description
+      longDescription
+      tags
+      currency
+      expensePolicy
+      isIncognito
+    }
+  }
+}

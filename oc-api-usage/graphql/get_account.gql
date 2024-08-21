@@ -1,16 +1,17 @@
-
-GET_HOST = '''
 query (
+  $id: String
   $slug: String
 ) {
-  host(
+  account(
+    id: $id
     slug: $slug
   ) {
     id
+    legacyId
     slug
     type
     name
     legalName
+    description
   }
 }
-'''

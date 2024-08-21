@@ -1,0 +1,2 @@
+schema: https://api.opencollective.com/graphql/v2
+documents: '**/*.gql'
