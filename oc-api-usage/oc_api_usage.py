@@ -1,47 +1,34 @@
 from os import environ as env
 
-from gql import Client as GqlClient
-from gql.transport.aiohttp import AIOHTTPTransport
-
-from domain.actions import ProcessHostApplicationAction
-from domain.inputs import CollectiveCreateInput, IndividualCreateInput, AccountReferenceInput
-from kin_client import UserClient, AdminClient
+from factory import ClientFactory
+from value_objects import ProcessHostApplicationAction
 
 OC_BASE_URL = 'https://api.opencollective.com/graphql/v2'
-SAVING_CLUB_SLUG = 'rjf-saving-club-1'
+KIN_HOST_SLUG = 'kincooperative'
+
+SAVING_CLUB_SLUG = 'temp-saving-club'
+CREATE_COLLECTIVE_PARAMS = {
+    'collective_name': 'Temporary Saving Club',
+    'collective_slug': SAVING_CLUB_SLUG,
+    'collective_description':
+        'A collective for testing integration of Kin Coop with Open Collective. Feel free to delete.',
+    'individual_name': 'Jay Bloggs',
+    'individual_email': 'jay@bloggs.com'
+}
+
+PROCESS_HOST_APPLICATION_PARAMS = {
+    'account_slug': SAVING_CLUB_SLUG,
+    'action': ProcessHostApplicationAction.APPROVE
+}
 
 
 def main(*, user_token: str, admin_token: str):
-    user_client = _create_user_client(user_token)
-    admin_client = _create_admin_client(admin_token)
+    client_factory = ClientFactory(base_url=OC_BASE_URL, host_slug=KIN_HOST_SLUG)
+    user_client = client_factory.create_user_client(user_token)
+    admin_client = client_factory.create_admin_client(admin_token)
 
-    user_client.create_collective(
-        CollectiveCreateInput(
-            name='My First Saving Club',
-            slug=SAVING_CLUB_SLUG,
-            description='A club for testing integration of Kin Coop with Open Collective',
-        ),
-        IndividualCreateInput(name='Rich', email='foo@bar.com'),
-    )
-
-    admin_client.process_host_application(
-        account=AccountReferenceInput(SAVING_CLUB_SLUG),
-        action=ProcessHostApplicationAction.APPROVE,
-    )
-
-
-def _create_user_client(token) -> UserClient:
-    return _create_client(UserClient, token)
-
-
-def _create_admin_client(token) -> AdminClient:
-    return _create_client(AdminClient, token)
-
-
-def _create_client(client_constructor, token):
-    transport = AIOHTTPTransport(url=OC_BASE_URL, headers={'Authorization': f'Bearer {token}'})
-    gql_client = GqlClient(transport=transport, fetch_schema_from_transport=True)
-    return client_constructor(gql_client)
+    user_client.create_collective(**CREATE_COLLECTIVE_PARAMS)
+    admin_client.process_host_application(**PROCESS_HOST_APPLICATION_PARAMS)
 
 
 if __name__ == '__main__':
