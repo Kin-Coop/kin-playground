@@ -9,7 +9,7 @@ Refer to [their docs](https://docs.opencollective.com/help/developers/oauth) for
 
 Below are instructions for running on Linux or Mac.
 
-### 1. Create an environment variable file
+### 0. Create an environment variable file
 
 Open a terminal in the present directory and run:
 

@@ -4,9 +4,10 @@ from factory import ClientFactory
 from value_objects import ProcessHostApplicationAction
 
 OC_BASE_URL = 'https://api.opencollective.com/graphql/v2'
-KIN_HOST_SLUG = 'kincooperative'
 
+KIN_HOST_SLUG = 'kincooperative'
 SAVING_CLUB_SLUG = 'temp-saving-club'
+
 CREATE_COLLECTIVE_PARAMS = {
     'collective_name': 'Temporary Saving Club',
     'collective_slug': SAVING_CLUB_SLUG,
