@@ -2,8 +2,7 @@ import json
 from os import environ as env
 
 from client import Handler, ClientFactory
-from model import ProcessHostApplicationAction
-
+from model import ProcessHostApplicationAction, MemberRole
 
 OC_BASE_URL = 'https://api.opencollective.com/graphql/v2'
 
@@ -30,17 +29,26 @@ Handler.response_handler = lambda _, response: print('Response:', json.dumps(res
 Handler.error_message_handler = lambda _, message: print('Error:', message)
 
 
-def main(*, user_token: str, admin_token: str):
+def main(*, user_1_token: str, user_2_token: str, admin_token: str):
     client_factory = ClientFactory(base_url=OC_BASE_URL, host_slug=KIN_HOST_SLUG)
-    user_client = client_factory.create_user_client(user_token)
+    user_1_client = client_factory.create_user_client(user_1_token)
+    user_2_client = client_factory.create_user_client(user_2_token)
     admin_client = client_factory.create_admin_client(admin_token)
 
-    user_client.create_collective(**CREATE_COLLECTIVE_PARAMS)
+    user_1_client.create_collective(**CREATE_COLLECTIVE_PARAMS)
     admin_client.process_host_application(**PROCESS_HOST_APPLICATION_PARAMS)
+
+    user_2_account = user_2_client.get_logged_in_account()
+
+    user_1_client.invite_member(
+        collective_slug=SAVING_CLUB_SLUG, invitee_slug=user_2_account['slug'], member_role=MemberRole.CONTRIBUTOR
+    )
+
 
 
 if __name__ == '__main__':
     main(
-        user_token=env['USER_TOKEN'],
+        user_1_token=env['USER_1_TOKEN'],
+        user_2_token=env['USER_2_TOKEN'],
         admin_token=env['ADMIN_TOKEN']
     )

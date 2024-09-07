@@ -1,0 +1,134 @@
+mutation (
+  $memberAccount: AccountReferenceInput!
+  $account: AccountReferenceInput!
+  $role: MemberRole!
+) {
+  inviteMember(
+    memberAccount: $memberAccount
+    account: $account
+    role: $role
+  ) {
+    id
+    inviter {
+      id
+      legacyId
+      slug
+      type
+      name
+      legalName
+      description
+      longDescription
+      tags
+      website
+      twitterHandle
+      githubHandle
+      repositoryUrl
+      currency
+      expensePolicy
+      isIncognito
+      createdAt
+      updatedAt
+      isArchived
+      isFrozen
+      isActive
+      isHost
+      isAdmin
+      emails
+      settings
+      supportedExpenseTypes
+      categories
+      email
+      isGuest
+      hasTwoFactorAuth
+      newsletterOptIn
+      hasSeenLatestChangelogEntry
+      hasPassword
+    }
+    createdAt
+    account {
+      id
+      legacyId
+      slug
+      type
+      name
+      legalName
+      description
+      longDescription
+      tags
+      website
+      twitterHandle
+      githubHandle
+      repositoryUrl
+      currency
+      expensePolicy
+      isIncognito
+      createdAt
+      updatedAt
+      isArchived
+      isFrozen
+      isActive
+      isHost
+      isAdmin
+      emails
+      settings
+      supportedExpenseTypes
+      categories
+    }
+    memberAccount {
+      id
+      legacyId
+      slug
+      type
+      name
+      legalName
+      description
+      longDescription
+      tags
+      website
+      twitterHandle
+      githubHandle
+      repositoryUrl
+      currency
+      expensePolicy
+      isIncognito
+      createdAt
+      updatedAt
+      isArchived
+      isFrozen
+      isActive
+      isHost
+      isAdmin
+      emails
+      settings
+      supportedExpenseTypes
+      categories
+    }
+    role
+    description
+    tier {
+      id
+      legacyId
+      slug
+      name
+      description
+      longDescription
+      videoUrl
+      currency
+      button
+      type
+      interval
+      frequency
+      presets
+      maxQuantity
+      availableQuantity
+      customFields
+      amountType
+      endsAt
+      invoiceTemplate
+      useStandalonePage
+      singleTicket
+      requireAddress
+    }
+    since
+  }
+}

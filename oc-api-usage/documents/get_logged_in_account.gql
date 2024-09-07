@@ -1,0 +1,8 @@
+query {
+  loggedInAccount {
+    id
+    slug
+    type
+    name
+  }
+}
