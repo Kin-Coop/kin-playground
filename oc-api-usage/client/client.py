@@ -1,7 +1,7 @@
 from gql import Client as GqlClient, gql
 
-from utils import tolerant_of
-from value_objects import ProcessHostApplicationAction
+from client import Handler
+from model import ProcessHostApplicationAction
 
 
 class Client:
@@ -17,7 +17,7 @@ class Client:
 
 class UserClient(Client):
 
-    @tolerant_of('account already exists')
+    @Handler('account already exists')
     def create_collective(
             self, *,
             collective_name: str,
@@ -44,7 +44,7 @@ class UserClient(Client):
 
 class AdminClient(Client):
 
-    @tolerant_of('collective application has already been approved')
+    @Handler('collective application has already been approved')
     def process_host_application(self, *, account_slug: str, action: ProcessHostApplicationAction):
         return self._execute('process_host_application', {
             'account': {

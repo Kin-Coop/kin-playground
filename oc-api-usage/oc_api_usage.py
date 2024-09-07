@@ -1,7 +1,9 @@
+import json
 from os import environ as env
 
-from factory import ClientFactory
-from value_objects import ProcessHostApplicationAction
+from client import Handler, ClientFactory
+from model import ProcessHostApplicationAction
+
 
 OC_BASE_URL = 'https://api.opencollective.com/graphql/v2'
 
@@ -21,6 +23,11 @@ PROCESS_HOST_APPLICATION_PARAMS = {
     'account_slug': SAVING_CLUB_SLUG,
     'action': ProcessHostApplicationAction.APPROVE
 }
+
+
+Handler.preamble = lambda _, func: print('\nCalling:', func.__name__)
+Handler.response_handler = lambda _, response: print('Response:', json.dumps(response, indent=2))
+Handler.error_message_handler = lambda _, message: print('Error:', message)
 
 
 def main(*, user_token: str, admin_token: str):
