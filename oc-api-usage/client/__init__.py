@@ -1,7 +1,6 @@
 __all__ = [
     'client',
-    'handler'
+    'factory',
 ]
-from client.handler import Handler
-from client.client import Client, UserClient, AdminClient
+from client.client import Client, UserClient, AdminClient, UnexpectedErrors
 from client.factory import ClientFactory

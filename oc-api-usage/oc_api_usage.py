@@ -1,8 +1,8 @@
-import json
 from os import environ as env
 
-from client import Handler, ClientFactory
+from client import ClientFactory, UnexpectedErrors
 from model import ProcessHostApplicationAction, MemberRole
+
 
 OC_BASE_URL = 'https://api.opencollective.com/graphql/v2'
 
@@ -24,11 +24,6 @@ PROCESS_HOST_APPLICATION_PARAMS = {
 }
 
 
-Handler.preamble = lambda _, func: print('\nCalling:', func.__name__)
-Handler.response_handler = lambda _, response: print('Response:', json.dumps(response, indent=2))
-Handler.error_message_handler = lambda _, message: print('Error:', message)
-
-
 def main(*, user_1_token: str, user_2_token: str, admin_token: str):
     client_factory = ClientFactory(base_url=OC_BASE_URL, host_slug=KIN_HOST_SLUG)
     user_1_client = client_factory.create_user_client(user_1_token)
@@ -45,10 +40,8 @@ def main(*, user_1_token: str, user_2_token: str, admin_token: str):
     )
 
 
-
 if __name__ == '__main__':
-    main(
-        user_1_token=env['USER_1_TOKEN'],
-        user_2_token=env['USER_2_TOKEN'],
-        admin_token=env['ADMIN_TOKEN']
-    )
+    try:
+        main(user_1_token=env['USER_1_TOKEN'], user_2_token=env['USER_2_TOKEN'], admin_token=env['ADMIN_TOKEN'])
+    except UnexpectedErrors as e:
+        print('\nUnexpected errors:', e)
